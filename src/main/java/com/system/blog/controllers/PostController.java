@@ -20,19 +20,20 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping
-    public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO postDTO){
-        return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
-    }
-
     @GetMapping
-    public List<PostDTO> getAllPosts(){
-        return postService.getAllPost();
+    public List<PostDTO> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+                                     @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize){
+        return postService.getAllPost(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDTO> savePost(@RequestBody PostDTO postDTO){
+        return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
