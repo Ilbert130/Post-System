@@ -1,13 +1,13 @@
 package com.system.blog.controllers;
 
 import com.system.blog.dtos.PostDTO;
+import com.system.blog.dtos.PostResponse;
 import com.system.blog.services.PostService;
+import com.system.blog.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,9 +21,13 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDTO> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-                                     @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize){
-        return postService.getAllPost(pageNumber, pageSize);
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_ORDER_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_ORDER_DIR, required = false) String sortDir){
+
+        return postService.getAllPost(pageNumber, pageSize, sortBy, sortDir);
     }
 
     @GetMapping("/{id}")
